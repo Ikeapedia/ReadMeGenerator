@@ -3,6 +3,8 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const generateMarkdown = require('./utils/generateMarkdown');
 const util = require('util');
+const createReadMe = util.promisify(writeToFile);
+const licenses = ['Apache License 2.0', 'GNU General Public License v3.0', 'MIT License', 'BSD 2-Clause Simplified License', 'BSD 3-Clause New or Revised License', 'Boost Software License 1.0', 'Creative Commons Zero v1.0 Universal', 'GNU Affero General Public License v3.0', 'GNU General Public License v2.0', 'No License'];
 
 
 // TODO: Create an array of questions for user input
@@ -25,47 +27,52 @@ const questions = [
         }
     },
 
+
     {
         type: 'input',
         name: 'installation',
         message: 'List installation instructions.',
         validate: nameInput => {
-            return (nameInput ? true : console.log('Please provide installation instructions.'));
+                return (nameInput ? true : console.log('Please provide installation instructions.'));
         }
     },
 
+
+
     {
         type: 'input',
-        name: 'Usage',
+        name: 'usage',
         message: 'Explain the usage of the content in your repository.',
         validate: nameInput => {
-            return (nameInput ? true : console.log('Please provide usage information.'));
+                return (nameInput ? true : console.log('Please provide usage information.'));
         }
     },
+
 
     {
         type: 'input',
         name: 'contribution',
-        message: 'List all contributors and how they contributed to the repository.',
+        message: 'List contribution instructions for users.',
         validate: nameInput => {
-            return (nameInput ? true : console.log('Please provide information regarding contributions.'));
+                return (nameInput ? true : console.log('Please provide information regarding how to contribute to the repository.'));
         }
     },
+
 
     {
         type: 'input',
         name: 'test',
         message: 'Provide an explanation to how users can test your application.',
         validate: nameInput => {
-            return (nameInput ? true : console.log('Please provide testing instructions.'));
+                return (nameInput ? true : console.log('Please provide testing instructions.'));
         }
     },
 
     {
-        type: 'checkbox',
+        type: 'list',
         name: 'license',
         message: 'Select the license used',
-        choices: ['Apache License 2.0', 'GNU General Public License v3.0', 'MIT License', 'BSD 2-Clause ‘Simplified’ License',  'BSD 3-Clause ‘New’ or ‘Revised’ License', 'Boost Software License 1.0', 'Creative Commons Zero v1.0 Universal', 'GNU Affero General Public License v3.0', 'GNU General Public License v2.0'],
+        choices: licenses,
         validate: nameInput => {
             return (nameInput ? true : console.log('Please select the license used.'));
         }
@@ -87,34 +94,25 @@ const questions = [
         validate: nameInput => {
             return (nameInput ? true : console.log('Please enter your email address.'));
         }
-    },
-
-    {
-        type: 'input',
-        name: 'questions',
-        message: 'How can users contact you with questions?',
-        validate: nameInput => {
-            return (nameInput ? true : console.log('Please provide method to contact you for questions.'));
-        }
-    },
+    }
 
 ];
 
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {
- fs.writeFile(fileName, data, error => error ? console.log("There appears to be an issue " + error) : console.log("No issues found"))
+    fs.writeFile(fileName, data, error => error ? console.log("There appears to be an issue " + error) : console.log("No issues found"))
 }
 
-const createReadMe = util.promisify(writeToFile);
- 
+
+
 // TODO: Create a function to initialize app
 async function init() {
     try {
         const userInput = await inquirer.prompt(questions);
         const rmMarkdown = generateMarkdown(userInput);
-        await createReadMe ('README0.md', rmMarkdown);
+        await createReadMe('README0.md', rmMarkdown);
     }
-    catch(error) {
+    catch (error) {
         console.log('There appears to be an error: ' + error);
     }
 
