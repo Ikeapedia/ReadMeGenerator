@@ -1,6 +1,9 @@
 # ReadMeGenerator
 A README generator to help create professional README for new projects
 
+##Video Walkthrough
+https://youtu.be/1dQef7ilJOA
+
 Using the completed ReadMe Generator to create this current README
 
 # README Generator ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
